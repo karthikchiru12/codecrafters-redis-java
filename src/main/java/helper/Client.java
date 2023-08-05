@@ -24,7 +24,8 @@ public class Client extends Thread {
                 String line;
                 int respResponseArrayLength = 0;
                 boolean isRespArray = false;
-                StringBuilder respResponseArray = new StringBuilder();
+                boolean isEcho = true;
+                StringBuilder echoResponse = new StringBuilder();
                 while ((line = bufferedReader.readLine()) != null) {
                     if (line.startsWith("*")) {
                         isRespArray = true;
@@ -34,19 +35,18 @@ public class Client extends Thread {
                         dataOutputStream.flush();
                     }
                     if (line.toLowerCase().equals("echo")) {
-                        if (!isRespArray) {
-                            dataOutputStream.writeBytes("$" + line.length() + line + "\r\n");
-                            dataOutputStream.flush();
-                        } else {
-                            respResponseArrayLength++;
-                            respResponseArray.append("$").append(line.length()).append(line).append("\r\n");
-                        }
+                        isEcho = true;
+                    }
+                    if(isEcho)
+                    {
+                        echoResponse.append(line).append("\r\n");
+                        respResponseArrayLength += 1;
                     }
                     System.out.println(line);
                 }
                 if (isRespArray) {
-                    System.out.println(respResponseArray);
-                    dataOutputStream.writeBytes("*" + String.valueOf(respResponseArrayLength) + "\r\n" + respResponseArray);
+                    System.out.println(echoResponse);
+                    dataOutputStream.writeBytes("*" + String.valueOf(respResponseArrayLength) + "\r\n" + echoResponse);
                     dataOutputStream.flush();
                 }
                 clientSocket.close();
