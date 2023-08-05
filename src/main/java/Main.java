@@ -24,8 +24,11 @@ public class Main {
       String line;
       while((line = bufferedReader.readLine()) != null)
       {
-          dataOutputStream.writeBytes("+PONG\r\n");
-          dataOutputStream.flush();
+          if(line.equals("ping"))
+          {
+            dataOutputStream.writeBytes("+PONG\r\n");
+            dataOutputStream.flush();
+          }
           System.out.println(line);
       }
     }
