@@ -20,11 +20,18 @@ public class Main {
       BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
       DataOutputStream dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
 
-      while(bufferedReader.readLine() != null)
+
+      String line;
+      while(true)
       {
-        dataOutputStream.writeBytes("+PONG\r\n");
-        dataOutputStream.flush();
-        break;
+        line = bufferedReader.readLine();
+        if(line == null)
+        {
+          dataOutputStream.writeBytes("+PONG\r\n");
+          dataOutputStream.flush();
+          break;
+        }
+        System.out.println(line);
       }
     }
     catch (IOException ioException)
