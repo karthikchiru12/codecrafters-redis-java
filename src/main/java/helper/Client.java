@@ -34,18 +34,17 @@ public class Client extends Thread {
                         dataOutputStream.writeBytes("+PONG\r\n");
                         dataOutputStream.flush();
                     }
-                    if (line.toLowerCase().equals("echo")) {
-                        isEcho = true;
-                    }
                     if(isEcho)
                     {
-                        echoResponse.append(line).append("\r\n");
+                        echoResponse.append("$").append(line.length()).append(line).append("\r\n");
                         respResponseArrayLength += 1;
+                    }
+                    if (line.toLowerCase().equals("echo")) {
+                        isEcho = true;
                     }
                     System.out.println(line);
                 }
                 if (isRespArray) {
-                    System.out.println(echoResponse);
                     dataOutputStream.writeBytes("*" + String.valueOf(respResponseArrayLength) + "\r\n" + echoResponse);
                     dataOutputStream.flush();
                 }
