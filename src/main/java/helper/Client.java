@@ -45,6 +45,7 @@ public class Client extends Thread {
                     System.out.println(line);
                 }
                 if (isRespArray) {
+                    System.out.println(respResponseArray);
                     dataOutputStream.writeBytes("*" + String.valueOf(respResponseArrayLength) + "\r\n" + respResponseArray);
                     dataOutputStream.flush();
                 }
