@@ -22,16 +22,11 @@ public class Main {
 
 
       String line;
-      while(true)
+      while((line = bufferedReader.readLine()) != null)
       {
-        line = bufferedReader.readLine();
-        if(line == null)
-        {
           dataOutputStream.writeBytes("+PONG\r\n");
           dataOutputStream.flush();
-          break;
-        }
-        System.out.println(line);
+          System.out.println(line);
       }
     }
     catch (IOException ioException)
