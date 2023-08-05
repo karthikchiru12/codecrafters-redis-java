@@ -24,6 +24,7 @@ public class Main {
       {
         dataOutputStream.writeBytes("+PONG\r\n");
         dataOutputStream.flush();
+        break;
       }
     }
     catch (IOException ioException)
