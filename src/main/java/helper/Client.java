@@ -21,14 +21,32 @@ public class Client extends Thread {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 DataOutputStream dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
 
-
                 String line;
+                int respResponseArrayLength = 0;
+                boolean isRespArray = false;
+                StringBuilder respResponseArray = new StringBuilder();
                 while ((line = bufferedReader.readLine()) != null) {
+                    if (line.startsWith("*")) {
+                        isRespArray = true;
+                    }
                     if (line.equals("ping")) {
                         dataOutputStream.writeBytes("+PONG\r\n");
                         dataOutputStream.flush();
                     }
+                    if (line.toLowerCase().equals("echo")) {
+                        if (!isRespArray) {
+                            dataOutputStream.writeBytes("$" + line.length() + line + "\r\n");
+                            dataOutputStream.flush();
+                        } else {
+                            respResponseArrayLength++;
+                            respResponseArray.append("$").append(line.length()).append(line).append("\r\n");
+                        }
+                    }
                     System.out.println(line);
+                }
+                if (isRespArray) {
+                    dataOutputStream.writeBytes("$" + respResponseArrayLength + "\r\n" + respResponseArray);
+                    dataOutputStream.flush();
                 }
                 clientSocket.close();
             }
