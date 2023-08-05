@@ -1,63 +1,29 @@
-import helper.SocketCreator;
+import helper.Client;
+import helper.Server;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 
 public class Main {
-  public static void main(String[] args){
+    public static void main(String[] args) {
 
-    int port = 6379;
-    boolean reuseAddress = true;
-    ServerSocket serverSocket = null;
-    Socket clientSocket = null;
+        int port = 6379;
+        boolean reuseAddress = true;
+        ServerSocket serverSocket = null;
 
-    try
-    {
-      serverSocket = SocketCreator.getServerSocket(port,reuseAddress);
-      clientSocket = serverSocket.accept();
+        try {
+            serverSocket = Server.getServerSocket(port, reuseAddress);
 
-      BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-      DataOutputStream dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
+            while (true) {
+                Client client = new Client(serverSocket.accept());
+                client.start();
+            }
 
-
-      String line;
-      while((line = bufferedReader.readLine()) != null)
-      {
-          if(line.equals("ping"))
-          {
-            dataOutputStream.writeBytes("+PONG\r\n");
-            dataOutputStream.flush();
-          }
-          System.out.println(line);
-      }
-    }
-    catch (IOException ioException)
-    {
-      System.out.println("IOException occurred : " + ioException.getMessage());
-    }
-    catch(Exception exception)
-    {
-      System.out.println("Exception occurred : " + exception.getMessage());
-    }
-    finally {
-      try
-      {
-        if(clientSocket != null)
-        {
-          clientSocket.close();
+        } catch (IOException ioException) {
+            System.out.println("IOException occurred : " + ioException.getMessage());
+        } catch (Exception exception) {
+            System.out.println("Exception occurred : " + exception.getMessage());
         }
-      }
-      catch (IOException ioException)
-      {
-        System.out.println("IOException occurred : " + ioException.getMessage());
-      }
-      catch(Exception exception)
-      {
-        System.out.println("Exception occurred : " + exception.getMessage());
-      }
 
     }
-
-  }
 }
