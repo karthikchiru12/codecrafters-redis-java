@@ -22,32 +22,18 @@ public class Client extends Thread {
                 DataOutputStream dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
 
                 String line;
-                int respResponseArrayLength = 0;
-                boolean isRespArray = false;
-                boolean isEcho = true;
-                String echoResponse = "";
+                System.out.println(bufferedReader);
                 while ((line = bufferedReader.readLine()) != null) {
-                    if (line.startsWith("*")) {
-                        isRespArray = true;
-                    }
                     if (line.equals("ping")) {
                         dataOutputStream.writeBytes("+PONG\r\n");
                         dataOutputStream.flush();
                     }
-                    if(isEcho)
+                    if(line.equals("echo"))
                     {
-                        echoResponse  = echoResponse + "$" + line.length() + line +"\r\n";
-                        respResponseArrayLength += 1;
-                    }
-                    if (line.toLowerCase().equals("echo")) {
-                        isEcho = true;
+                        dataOutputStream.writeBytes(line+"\r\n");
+                        dataOutputStream.flush();
                     }
                     System.out.println(line);
-                }
-                if (isRespArray && isEcho) {
-                    System.out.println(echoResponse);
-                    dataOutputStream.writeBytes("*" + respResponseArrayLength + "\r\n" + echoResponse);
-                    dataOutputStream.flush();
                 }
                 clientSocket.close();
             }
