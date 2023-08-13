@@ -65,6 +65,8 @@ public class Client extends Thread {
                             setList.add("0");
                         }
 
+                        System.out.println("Reached here");
+
                         this.redisStore.put(keyString, setList);
 
                         dataOutputStream.writeBytes("+OK\r\n");
