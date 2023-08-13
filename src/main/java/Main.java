@@ -24,9 +24,9 @@ public class Main {
             }
 
         } catch (IOException ioException) {
-            System.out.println("IOException occurred : " + ioException.getMessage());
+            System.out.println("IOException occurred : " + ioException);
         } catch (Exception exception) {
-            System.out.println("Exception occurred : " + exception.getMessage());
+            System.out.println("Exception occurred : " + exception);
         }
 
     }

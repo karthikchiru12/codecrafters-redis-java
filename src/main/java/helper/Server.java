@@ -11,7 +11,7 @@ public class Server {
                 serverSocket = new ServerSocket(port);
                 serverSocket.setReuseAddress(reuseAddress);
             } catch (Exception exception) {
-                System.out.println("Exception occurred : " + exception.getMessage());
+                System.out.println("Exception occurred : " + exception);
             }
 
         }
