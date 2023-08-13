@@ -60,6 +60,7 @@ public class Client extends Thread {
                                 setList.add(expiryInSeconds);
                             }
                         } else {
+                            System.out.println("Reached here");
                             setList.add("0");
                         }
 
