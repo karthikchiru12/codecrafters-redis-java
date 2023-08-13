@@ -76,6 +76,7 @@ public class Client extends Thread {
 
                         if(this.redisStore.containsKey(keyString))
                         {
+                            System.out.println("Reaced here");
                             long currentTime = new Date().getTime();
                             long expiryTime = currentTime + Long.parseLong(this.redisStore.get(keyString).get(1));
                             if (expiryTime != 0 || currentTime > expiryTime) {
