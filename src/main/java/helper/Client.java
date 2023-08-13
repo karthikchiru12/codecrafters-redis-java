@@ -82,6 +82,7 @@ public class Client extends Thread {
                                 dataOutputStream.writeBytes("$0\r\n\r\n");
                                 dataOutputStream.flush();
                             } else {
+                                System.out.println("Reaced here");
                                 dataOutputStream.writeBytes("+" + this.redisStore.get(keyString).get(0) + "\r\n");
                                 dataOutputStream.flush();
                             }
