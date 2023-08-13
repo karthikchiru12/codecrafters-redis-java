@@ -51,8 +51,7 @@ public class Client extends Thread {
                         String valueLength = bufferedReader.readLine();
                         String valueString = bufferedReader.readLine();
 
-                        Boolean argsPresent = bufferedReader.ready();
-                        if (argsPresent) {
+                        if (bufferedReader.ready()) {
                             String args = bufferedReader.readLine();
                             if (args.equals("px")) {
                                 String expiryInSeconds = bufferedReader.readLine();
