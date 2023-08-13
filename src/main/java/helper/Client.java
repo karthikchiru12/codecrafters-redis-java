@@ -51,6 +51,9 @@ public class Client extends Thread {
                         String valueString = bufferedReader.readLine();
 
                         this.redisStore.put(keyString,valueString);
+
+                        dataOutputStream.writeBytes("+OK\r\n");
+                        dataOutputStream.flush();
                     }
                     if(line.equals("get"))
                     {
