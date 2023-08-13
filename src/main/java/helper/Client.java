@@ -33,7 +33,7 @@ public class Client extends Thread {
                     {
                         String lengthOfString = bufferedReader.readLine();
                         String echoString = bufferedReader.readLine();
-                        System.out.println("$"+lengthOfString+echoString);
+                        System.out.println(lengthOfString+echoString);
                         dataOutputStream.writeBytes("+"+echoString+"\r\n");
                         dataOutputStream.flush();
                     }
