@@ -5,14 +5,18 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Client extends Thread {
 
     private Socket clientSocket;
 
-    public Client(Socket clientSocket) {
+    private Map<String,String> redisStore;
+
+    public Client(Socket clientSocket, Map<String,String> redisStore) {
         this.clientSocket = clientSocket;
+        this.redisStore = redisStore;
     }
 
     @Override
@@ -23,6 +27,7 @@ public class Client extends Thread {
                 DataOutputStream dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
 
                 String line;
+                String temp = null;
                 while ((line = bufferedReader.readLine()) != null) {
                     System.out.println(line);
                     if (line.equals("ping")) {
@@ -35,6 +40,24 @@ public class Client extends Thread {
                         String echoString = bufferedReader.readLine();
                         System.out.println(lengthOfString+echoString);
                         dataOutputStream.writeBytes("+"+echoString+"\r\n");
+                        dataOutputStream.flush();
+                    }
+                    if(line.equals("set"))
+                    {
+                        String keyLength = bufferedReader.readLine();
+                        String keyString = bufferedReader.readLine();
+
+                        String valueLength = bufferedReader.readLine();
+                        String valueString = bufferedReader.readLine();
+
+                        this.redisStore.put(keyString,valueString);
+                    }
+                    if(line.equals("get"))
+                    {
+                        String keyLength = bufferedReader.readLine();
+                        String keyString = bufferedReader.readLine();
+
+                        dataOutputStream.writeBytes("+"+this.redisStore.get(keyString)+"\r\n");
                         dataOutputStream.flush();
                     }
                 }
