@@ -84,7 +84,7 @@ public class Client extends Thread {
                                 dataOutputStream.flush();
                             } else {
                                 System.out.println("::");
-                                System.out.println(this.redisStore.toString());
+                                System.out.println(this.redisStore.entrySet().toString());
                                 dataOutputStream.writeBytes("+" + this.redisStore.get(keyString).get(0) + "\r\n");
                                 dataOutputStream.flush();
                             }
