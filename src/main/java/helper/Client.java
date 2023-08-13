@@ -76,7 +76,9 @@ public class Client extends Thread {
                         if(this.redisStore.containsKey(keyString))
                         {
                             long currentTime = new Date().getTime();
+                            System.out.println("::");
                             long expiryTime = currentTime + Long.parseLong(this.redisStore.get(keyString).get(1));
+                            System.out.println("::");
                             if (expiryTime != 0 || currentTime > expiryTime) {
                                 dataOutputStream.writeBytes("$0\r\n\r\n");
                                 dataOutputStream.flush();
