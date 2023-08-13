@@ -56,6 +56,7 @@ public class Client extends Thread {
                         this.redisStore.put(keyString, setList);
 
                         String args = bufferedReader.readLine();
+                        System.out.println(args);
                         if (args != null) {
                             if (args.equals("px")) {
                                 String expiryInSeconds = bufferedReader.readLine();
