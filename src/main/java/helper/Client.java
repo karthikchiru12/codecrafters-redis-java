@@ -51,6 +51,8 @@ public class Client extends Thread {
                         String valueLength = bufferedReader.readLine();
                         String valueString = bufferedReader.readLine();
 
+                        setList.add(valueString);
+
                         if (bufferedReader.ready()) {
                             String args = bufferedReader.readLine();
                             if (args.equals("px")) {
