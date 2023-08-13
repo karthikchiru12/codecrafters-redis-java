@@ -63,6 +63,9 @@ public class Client extends Thread {
                                 this.redisStore.put(keyString, setList);
                             }
                         }
+
+                        dataOutputStream.writeBytes("+OK\r\n");
+                        dataOutputStream.flush();
                     }
                     if (line.equals("get")) {
                         String keyLength = bufferedReader.readLine();
