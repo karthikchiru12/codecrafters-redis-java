@@ -22,8 +22,8 @@ public class Client extends Thread {
                 DataOutputStream dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
 
                 String line;
-                System.out.println(bufferedReader);
                 while ((line = bufferedReader.readLine()) != null) {
+                    System.out.println(line);
                     if (line.equals("ping")) {
                         dataOutputStream.writeBytes("+PONG\r\n");
                         dataOutputStream.flush();
@@ -31,9 +31,9 @@ public class Client extends Thread {
                     if(line.equals("echo"))
                     {
                         dataOutputStream.writeBytes(bufferedReader.readLine()+"\r\n");
+                        System.out.println(dataOutputStream.toString());
                         dataOutputStream.flush();
                     }
-                    System.out.println(line);
                 }
                 clientSocket.close();
             }
