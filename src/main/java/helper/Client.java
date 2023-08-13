@@ -53,6 +53,9 @@ public class Client extends Thread {
 
                         setList.add(valueString);
 
+                        dataOutputStream.writeBytes("+OK\r\n");
+                        dataOutputStream.flush();
+
                         String args;
                         if ((args = bufferedReader.readLine()) != null) {
                             if (args.equals("px")) {
@@ -68,9 +71,6 @@ public class Client extends Thread {
                         System.out.println("Reached here");
 
                         this.redisStore.put(keyString, setList);
-
-                        dataOutputStream.writeBytes("+OK\r\n");
-                        dataOutputStream.flush();
                     }
                     if (line.equals("get")) {
                         String keyLength = bufferedReader.readLine();
