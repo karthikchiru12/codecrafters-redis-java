@@ -55,9 +55,9 @@ public class Client extends Thread {
                         setList.add("0");
                         this.redisStore.put(keyString, setList);
 
-                        String args = bufferedReader.readLine();
-                        System.out.println(args);
-                        if (args != null) {
+                        Boolean argsPresent = bufferedReader.ready();
+                        if (argsPresent) {
+                            String args = bufferedReader.readLine();
                             if (args.equals("px")) {
                                 String expiryInSeconds = bufferedReader.readLine();
                                 setList.add(expiryInSeconds);
