@@ -51,10 +51,6 @@ public class Client extends Thread {
                         String valueLength = bufferedReader.readLine();
                         String valueString = bufferedReader.readLine();
 
-                        setList.add(valueString);
-                        setList.add("0");
-                        this.redisStore.put(keyString, setList);
-
                         Boolean argsPresent = bufferedReader.ready();
                         if (argsPresent) {
                             String args = bufferedReader.readLine();
@@ -64,7 +60,12 @@ public class Client extends Thread {
                                 this.redisStore.put(keyString, setList);
                             }
                         }
-
+                        else
+                        {
+                            setList.add(valueString);
+                            setList.add("0");
+                            this.redisStore.put(keyString, setList);
+                        }
                         dataOutputStream.writeBytes("+OK\r\n");
                         dataOutputStream.flush();
                     }
