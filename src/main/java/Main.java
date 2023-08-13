@@ -19,7 +19,7 @@ public class Main {
             Map<String, List<String>> redisStore = new HashMap<>();
 
             while (true) {
-                Client client = new Client(serverSocket.accept(),redisStore);
+                Client client = new Client(serverSocket.accept(), redisStore);
                 client.start();
             }
 
