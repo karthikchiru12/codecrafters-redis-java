@@ -53,36 +53,39 @@ public class Client extends Thread {
 
                         setList.add(valueString);
 
-                        dataOutputStream.writeBytes("+OK\r\n");
-                        dataOutputStream.flush();
-
                         String args;
                         if ((args = bufferedReader.readLine()) != null) {
                             if (args.equals("px")) {
                                 String expiryInSeconds = bufferedReader.readLine();
-                                Date date = new Date();
-                                long expiryTime = date.getTime() + Long.parseLong(expiryInSeconds);
-                                setList.add(Long.toString(expiryTime));
+                                setList.add(Long.toString(new Date().getTime() + Long.parseLong(expiryInSeconds)));
                             }
                         } else {
                             setList.add("0");
                         }
 
-                        System.out.println("Reached here");
-
                         this.redisStore.put(keyString, setList);
+                        dataOutputStream.writeBytes("+OK\r\n");
+                        dataOutputStream.flush();
                     }
                     if (line.equals("get")) {
                         String keyLength = bufferedReader.readLine();
                         String keyString = bufferedReader.readLine();
 
                         long currentTime = new Date().getTime();
-                        long expiryTime = Long.parseLong(this.redisStore.get(keyString).get(1));
-                        if (expiryTime != 0 || currentTime > expiryTime) {
+                        if(this.redisStore.containsKey(keyString))
+                        {
+                            long expiryTime = Long.parseLong(this.redisStore.get(keyString).get(1));
+                            if (expiryTime != 0 || currentTime > expiryTime) {
+                                dataOutputStream.writeBytes("$0\r\n\r\n");
+                                dataOutputStream.flush();
+                            } else {
+                                dataOutputStream.writeBytes("+" + this.redisStore.get(keyString).get(0) + "\r\n");
+                                dataOutputStream.flush();
+                            }
+                        }
+                        else
+                        {
                             dataOutputStream.writeBytes("$0\r\n\r\n");
-                            dataOutputStream.flush();
-                        } else {
-                            dataOutputStream.writeBytes("+" + this.redisStore.get(keyString).get(0) + "\r\n");
                             dataOutputStream.flush();
                         }
 
