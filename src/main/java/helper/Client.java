@@ -30,8 +30,9 @@ public class Client extends Thread {
                     }
                     if(line.equals("echo"))
                     {
-                        dataOutputStream.writeBytes(bufferedReader.readLine()+"\r\n");
-                        System.out.println(dataOutputStream.toString());
+                        String inputToCommand = bufferedReader.readLine();
+                        System.out.println(inputToCommand);
+                        dataOutputStream.writeBytes(inputToCommand+"\r\n");
                         dataOutputStream.flush();
                     }
                 }
