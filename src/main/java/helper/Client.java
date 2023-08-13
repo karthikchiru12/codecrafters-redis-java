@@ -53,8 +53,8 @@ public class Client extends Thread {
 
                         setList.add(valueString);
 
-                        String args;
-                        if ((args = bufferedReader.readLine()) != null) {
+                        String args = bufferedReader.readLine();
+                        if (args != null) {
                             if (args.equals("px")) {
                                 String expiryInSeconds = bufferedReader.readLine();
                                 setList.add(expiryInSeconds);
