@@ -63,7 +63,6 @@ public class Client extends Thread {
                         }
                         else
                         {
-                            setList.add(valueString);
                             setList.add("0");
                             this.redisStore.put(keyString, setList);
                         }
