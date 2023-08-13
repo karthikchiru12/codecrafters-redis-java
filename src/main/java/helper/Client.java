@@ -57,7 +57,7 @@ public class Client extends Thread {
                         if ((args = bufferedReader.readLine()) != null) {
                             if (args.equals("px")) {
                                 String expiryInSeconds = bufferedReader.readLine();
-                                setList.add(Long.toString(new Date().getTime() + Long.parseLong(expiryInSeconds)));
+                                setList.add(expiryInSeconds);
                             }
                         } else {
                             setList.add("0");
@@ -74,7 +74,7 @@ public class Client extends Thread {
                         long currentTime = new Date().getTime();
                         if(this.redisStore.containsKey(keyString))
                         {
-                            long expiryTime = Long.parseLong(this.redisStore.get(keyString).get(1));
+                            long expiryTime = currentTime + Long.parseLong(this.redisStore.get(keyString).get(1));
                             if (expiryTime != 0 || currentTime > expiryTime) {
                                 dataOutputStream.writeBytes("$0\r\n\r\n");
                                 dataOutputStream.flush();
