@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.stream.Collectors;
 
 public class Client extends Thread {
 
@@ -30,7 +31,7 @@ public class Client extends Thread {
                     }
                     if(line.equals("echo"))
                     {
-                        String inputToCommand = bufferedReader.readLine();
+                        String inputToCommand = bufferedReader.lines().collect(Collectors.joining("\r\n"));
                         System.out.println(inputToCommand);
                         dataOutputStream.writeBytes(inputToCommand+"\r\n");
                         dataOutputStream.flush();
