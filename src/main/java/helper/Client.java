@@ -5,6 +5,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -12,9 +16,9 @@ public class Client extends Thread {
 
     private Socket clientSocket;
 
-    private Map<String,String> redisStore;
+    private Map<String, List<String>> redisStore;
 
-    public Client(Socket clientSocket, Map<String,String> redisStore) {
+    public Client(Socket clientSocket, Map<String,List<String>> redisStore) {
         this.clientSocket = clientSocket;
         this.redisStore = redisStore;
     }
@@ -44,13 +48,32 @@ public class Client extends Thread {
                     }
                     if(line.equals("set"))
                     {
+                        List<String> setList = new ArrayList<>();
                         String keyLength = bufferedReader.readLine();
                         String keyString = bufferedReader.readLine();
 
                         String valueLength = bufferedReader.readLine();
                         String valueString = bufferedReader.readLine();
 
-                        this.redisStore.put(keyString,valueString);
+                        setList.add(valueString);
+
+                        String args;
+                        if((args = bufferedReader.readLine())!=null)
+                        {
+                            if(args == "px")
+                            {
+                                String expiryInSeconds = bufferedReader.readLine();
+                                Date date = new Date();
+                                Long expiryTime = date.getTime() + Long.parseLong(expiryInSeconds);
+                                setList.add(expiryTime.toString());
+                            }
+                        }
+                        else
+                        {
+                            setList.add(null);
+                        }
+
+                        this.redisStore.put(keyString,setList);
 
                         dataOutputStream.writeBytes("+OK\r\n");
                         dataOutputStream.flush();
@@ -60,8 +83,24 @@ public class Client extends Thread {
                         String keyLength = bufferedReader.readLine();
                         String keyString = bufferedReader.readLine();
 
-                        dataOutputStream.writeBytes("+"+this.redisStore.get(keyString)+"\r\n");
-                        dataOutputStream.flush();
+                        Long currentTime = new Date().getTime();
+                        Long expiryTime = Long.parseLong(this.redisStore.get(keyString).get(1));
+                        if(expiryTime != null)
+                        {
+                            if(currentTime > expiryTime)
+                            {
+                                dataOutputStream.writeBytes("$0\r\n\r\n");
+                                dataOutputStream.flush();
+                            }
+                            else
+                            {
+                                dataOutputStream.writeBytes("+"+this.redisStore.get(keyString).get(0)+"\r\n");
+                                dataOutputStream.flush();
+                            }
+                        }
+
+
+
                     }
                 }
                 clientSocket.close();

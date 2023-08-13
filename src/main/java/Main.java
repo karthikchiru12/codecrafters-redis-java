@@ -4,6 +4,7 @@ import helper.Server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Main {
@@ -15,7 +16,7 @@ public class Main {
 
         try {
             serverSocket = Server.getServerSocket(port, reuseAddress);
-            Map<String,String> redisStore = new HashMap<>();
+            Map<String, List<String>> redisStore = new HashMap<>();
 
             while (true) {
                 Client client = new Client(serverSocket.accept(),redisStore);
