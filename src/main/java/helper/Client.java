@@ -58,15 +58,16 @@ public class Client extends Thread {
                             if (args.equals("px")) {
                                 String expiryInSeconds = bufferedReader.readLine();
                                 setList.add(expiryInSeconds);
+                                this.redisStore.put(keyString, setList);
+                                dataOutputStream.writeBytes("+OK\r\n");
+                                dataOutputStream.flush();
                             }
                         } else {
-                            System.out.println("Reached here");
                             setList.add("0");
+                            this.redisStore.put(keyString, setList);
+                            dataOutputStream.writeBytes("+OK\r\n");
+                            dataOutputStream.flush();
                         }
-
-                        this.redisStore.put(keyString, setList);
-                        dataOutputStream.writeBytes("+OK\r\n");
-                        dataOutputStream.flush();
                     }
                     if (line.equals("get")) {
                         String keyLength = bufferedReader.readLine();
